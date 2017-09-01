@@ -1,0 +1,188 @@
+{
+  "top_5_test_loss": [
+    0.1,
+    0.1,
+    0.4,
+    0.4,
+    0.5
+  ],
+  "top_5_train_loss": [
+    1.1,
+    1.1,
+    1.1,
+    1.1,
+    1.1
+  ],
+  "info": [
+    {
+      "rank": 1,
+      "optimizer_name": "CrossEntropyLoss",
+      "test_loss": 0.1,
+      "lossfunc_info": {},
+      "lossfunc_name": "SGD",
+      "net_parameters": "pcNN (\n  (conv1): Conv2d(3, 6, kernel_size=(5, 5), stride=(1, 1))\n  (conv2): Conv2d(6, 16, kernel_size=(5, 5), stride=(1, 1))\n  (pool): MaxPool2d (size=(2, 2), stride=(2, 2), dilation=(1, 1))\n  (fc1): Linear (400 -> 120)\n  (fc2): Linear (120 -> 84)\n  (fc3): Linear (84 -> 10)\n)",
+      "optimizer_info": {
+        "param_groups": [
+          {
+            "weight_decay": 0,
+            "lr": 0.001,
+            "momentum": 0.9,
+            "dampening": 0,
+            "params": [
+              4599978472,
+              4599978736,
+              4599979000,
+              4600066120,
+              4600066296,
+              4600066384,
+              4600066472,
+              4600066560,
+              4600066648,
+              4600066736
+            ],
+            "nesterov": false
+          }
+        ],
+        "state": {}
+      },
+      "train_loss": 1.1,
+      "net_name": "7558d5c0d768"
+    },
+    {
+      "rank": 2,
+      "optimizer_name": "CrossEntropyLoss",
+      "test_loss": 0.1,
+      "net_name": "21ac06de7582",
+      "lossfunc_name": "SGD",
+      "optimizer_info": {
+        "param_groups": [
+          {
+            "weight_decay": 0,
+            "lr": 0.001,
+            "momentum": 0.9,
+            "dampening": 0,
+            "params": [
+              4510775784,
+              4510776048,
+              4510776312,
+              4510863432,
+              4510863608,
+              4510863696,
+              4510863784,
+              4510863872,
+              4510863960,
+              4510864048
+            ],
+            "nesterov": false
+          }
+        ],
+        "state": {}
+      },
+      "net_parameters": "pcNN (\n  (conv1): Conv2d(3, 6, kernel_size=(5, 5), stride=(1, 1))\n  (conv2): Conv2d(6, 16, kernel_size=(5, 5), stride=(1, 1))\n  (pool): MaxPool2d (size=(2, 2), stride=(2, 2), dilation=(1, 1))\n  (fc1): Linear (400 -> 120)\n  (fc2): Linear (120 -> 84)\n  (fc3): Linear (84 -> 10)\n)",
+      "train_loss": 1.1,
+      "lossfunc_info": {}
+    },
+    {
+      "rank": 1,
+      "optimizer_name": "CrossEntropyLoss",
+      "test_loss": 0.4,
+      "lossfunc_info": {},
+      "lossfunc_name": "SGD",
+      "net_parameters": "pcNN (\n  (conv1): Conv2d(3, 6, kernel_size=(5, 5), stride=(1, 1))\n  (conv2): Conv2d(6, 16, kernel_size=(5, 5), stride=(1, 1))\n  (pool): MaxPool2d (size=(2, 2), stride=(2, 2), dilation=(1, 1))\n  (fc1): Linear (400 -> 120)\n  (fc2): Linear (120 -> 84)\n  (fc3): Linear (84 -> 10)\n)",
+      "optimizer_info": {
+        "param_groups": [
+          {
+            "weight_decay": 0,
+            "lr": 0.001,
+            "momentum": 0.9,
+            "dampening": 0,
+            "params": [
+              4582787560,
+              4582787824,
+              4582788088,
+              4582875208,
+              4582875384,
+              4582875472,
+              4582875560,
+              4582875648,
+              4582875736,
+              4582875824
+            ],
+            "nesterov": false
+          }
+        ],
+        "state": {}
+      },
+      "train_loss": 1.1,
+      "net_name": "e2449101d0c1"
+    },
+    {
+      "rank": 2,
+      "optimizer_name": "CrossEntropyLoss",
+      "test_loss": 0.4,
+      "lossfunc_info": {},
+      "lossfunc_name": "SGD",
+      "net_parameters": "pcNN (\n  (conv1): Conv2d(3, 6, kernel_size=(5, 5), stride=(1, 1))\n  (conv2): Conv2d(6, 16, kernel_size=(5, 5), stride=(1, 1))\n  (pool): MaxPool2d (size=(2, 2), stride=(2, 2), dilation=(1, 1))\n  (fc1): Linear (400 -> 120)\n  (fc2): Linear (120 -> 84)\n  (fc3): Linear (84 -> 10)\n)",
+      "optimizer_info": {
+        "param_groups": [
+          {
+            "weight_decay": 0,
+            "lr": 0.001,
+            "momentum": 0.9,
+            "dampening": 0,
+            "params": [
+              4493212136,
+              4493212400,
+              4493212664,
+              4493299784,
+              4493299960,
+              4493300048,
+              4493300136,
+              4493300224,
+              4493300312,
+              4493300400
+            ],
+            "nesterov": false
+          }
+        ],
+        "state": {}
+      },
+      "train_loss": 1.1,
+      "net_name": "f96411c8b070"
+    },
+    {
+      "rank": 1,
+      "optimizer_name": "CrossEntropyLoss",
+      "test_loss": 0.5,
+      "lossfunc_info": {},
+      "lossfunc_name": "SGD",
+      "net_parameters": "pcNN (\n  (conv1): Conv2d(3, 6, kernel_size=(5, 5), stride=(1, 1))\n  (conv2): Conv2d(6, 16, kernel_size=(5, 5), stride=(1, 1))\n  (pool): MaxPool2d (size=(2, 2), stride=(2, 2), dilation=(1, 1))\n  (fc1): Linear (400 -> 120)\n  (fc2): Linear (120 -> 84)\n  (fc3): Linear (84 -> 10)\n)",
+      "optimizer_info": {
+        "param_groups": [
+          {
+            "weight_decay": 0,
+            "lr": 0.001,
+            "momentum": 0.9,
+            "dampening": 0,
+            "params": [
+              4486646160,
+              4486646424,
+              4486646688,
+              4486647744,
+              4486733984,
+              4486734072,
+              4486734160,
+              4486734248,
+              4486734336,
+              4486734424
+            ],
+            "nesterov": false
+          }
+        ],
+        "state": {}
+      },
+      "train_loss": 1.1,
+      "net_name": "f4b55e7867db"
+    }
+  ]
+}

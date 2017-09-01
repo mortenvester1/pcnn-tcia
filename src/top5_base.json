@@ -1,0 +1,21 @@
+{
+  "top_5_test_loss" : [10,20,30,40,50],
+  "top_5_train_loss" : [11,21,31,41,51],
+  "info" : [
+      {
+        "net_name" : "net1"
+      },
+      {
+        "net_name" : "net2"
+      },
+      {
+        "net_name" : "net3"
+      },
+      {
+        "net_name" : "net4"
+      },
+      {
+        "net_name" : "net5"
+      }
+  ]
+}
