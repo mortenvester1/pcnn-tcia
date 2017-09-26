@@ -1,5 +1,6 @@
 # Files
 *.DS_Store
+src/visualizer.py
 
 # Folders
 testdata
@@ -7,3 +8,4 @@ traindata
 zips
 nets
 readings
+__pycache__
