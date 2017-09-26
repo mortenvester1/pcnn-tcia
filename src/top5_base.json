@@ -1,6 +1,6 @@
 {
-  "top_5_test_loss" : [10,20,30,40,50],
-  "top_5_train_loss" : [11,21,31,41,51],
+  "top_5_test_loss" : [100,200,300,400,500],
+  "top_5_train_loss" : [111,211,311,411,511],
   "info" : [
       {
         "net_name" : "net1"
