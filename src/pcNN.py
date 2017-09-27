@@ -23,10 +23,11 @@ HLEN = 106
 
 TRAIN_LOADER = TEST_LOADER = CLASSES = None
 
-NO_EPOCHS = 5
+NO_EPOCHS = 20
 BATCH_SIZE = 100
 LR = 0.001
 MOM = 0.9
+DROPOUT_RATE = 0.20
 
 LOSSFUNC = nn.CrossEntropyLoss()
 LOSS_NAME = "CrossEntropy"
@@ -57,12 +58,8 @@ class pcNN(nn.Module):
                                  momentum=0.1,
                                  affine=True)
 
-        self.max_pool  = nn.MaxPool2d(kernel_size = 2,
-                                  stride = 1,
-                                  padding = 0,
-                                  dilation = 1,
-                                  ceil_mode = False,
-                                  return_indices = False)
+        self.dropout = nn.Dropout(p=DROPOUT_RATE)
+        self.dropout2d = nn.Dropout2d(p=DROPOUT_RATE)
 
         self.fc1 = nn.Linear(48, 24)
         self.fc2 = nn.Linear(24, 2)
@@ -81,10 +78,12 @@ class pcNN(nn.Module):
         # Layer 1, 3x3 Conv, Batch Norm, Relu
         x = self.conv1(x)
         x = F.relu(self.BN(x))
+        x = self.dropout2d(self.BN(x))
 
         # Layer 2, 3x3 Conv, Batch Norm, Relu
         x = self.conv1(x)
         x = F.relu(self.BN(x))
+        #x = self.dropout2d(self.BN(x))
 
         # Layer 3, 2x2 Max_pool, 3x3 Conv, Batch Norm, Relu
         x = F.max_pool2d(x, kernel_size = 2)
@@ -94,10 +93,12 @@ class pcNN(nn.Module):
         # Layer 4, 3x3 Conv, Batch Norm, Relu
         x = self.conv1(x)
         x = F.relu(self.BN(x))
+        #x = self.dropout2d(self.BN(x))
 
         # Layer 5, 3x3 Conv, Batch Norm, Relu
         x = self.conv1(x)
         x = F.relu(self.BN(x))
+        x = self.dropout2d(self.BN(x))
 
         # Layer 6, 2x2 Max_pool
         x = F.max_pool2d(x, kernel_size = 2)
@@ -199,8 +200,10 @@ def training(net, optimizer, lossfunc, number_of_epochs = 1):
 
         train_loss = running_loss / (j + 1)
         net.train_loss = train_loss
+        net.train_pct = train_pct
         test_loss, test_pct = testing(net, lossfunc)
         net.test_loss = test_loss
+        net.test_pct = test_pct
 
         net.epochs_trained += 1
         etime  = time.time() - start_time
@@ -215,7 +218,6 @@ def training(net, optimizer, lossfunc, number_of_epochs = 1):
     print_border()
     print_header("Total Training Time :{0:1.9f}".format(total_time))
     print_border()
-    net.train_loss = train_loss
     net.total_time += total_time
 
     save_net_info(net, optimizer, lossfunc)
@@ -276,6 +278,7 @@ def save_net_info(net, optimizer, lossfunc):
             "test_loss" : net.test_loss,
             "train_pct" : net.train_pct,
             "test_pct" : net.test_pct,
+            "train_time" : net.total_time,
             "optimizer_name" : net.optimizer,
             "optimizer_info" : None,
             "lossfunc_name" : net.lossfunc,
@@ -297,6 +300,9 @@ def save_net_info(net, optimizer, lossfunc):
 
         # Create dir move old
         os.mkdir( path + "/nets/" + net_name)
+        cpcall = "cp %s/pcNN.py %s" % (path + "/src", path + "/nets/" + net_name + "/")
+        os.system(cpcall)
+
         movecall = "mv %s/ %s" % (path + "/nets/" + old['net_name'],
                              path + "/nets/old" )
         os.system(movecall)
