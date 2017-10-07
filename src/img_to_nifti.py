@@ -37,8 +37,8 @@ def register_patient(df, data_dir, data_type = "Train"):
         dicom_path = data_dir + "/".join(["/raw/dicom", pid])
         ktrans_path = data_dir + "/".join(["/raw/ktrans", pid, pid])
 
-        #dicom2nifti(data_dir, 'adc', dicom_path, adc_dir, pid)
-        #dicom2nifti(data_dir, 'bval', dicom_path, bval_dir, pid)
+        dicom2nifti(data_dir, 'adc', dicom_path, adc_dir, pid)
+        dicom2nifti(data_dir, 'bval', dicom_path, bval_dir, pid)
 
         img = load_ktrans(ktrans_path)
         nimg = ktrans2nifti(data_dir, img, 'ktrans', pid, transpose = True)
@@ -119,4 +119,4 @@ if __name__ == '__main__':
     df_test = pd.read_csv(test_dir + "/ProstateX2-DataInfo-Test/ProstateX-2-Images-Test.csv")
 
     register_patient(df_train, train_dir, data_type = "Train")
-    #register_patient(df_test, test_dir, data_type = "Test")
+    register_patient(df_test, test_dir, data_type = "Test")
