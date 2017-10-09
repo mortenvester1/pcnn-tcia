@@ -97,13 +97,13 @@ def load_ktrans(path):
 
     return data
 
+
 def extract_info_from_sitk_img(img):
     arr = sitk.GetArrayFromImage(img)
     origin = np.array(list(reversed(img.GetOrigin())), dtype = np.float)
     scale = np.array(list(reversed(img.GetSpacing())), dtype = np.float)
     direction = np.array(list(img.GetDirection()), dtype = np.float)
 
-    #arr = normalize_arr(arr, 'std')
     data = {
         "img" : img,
         "arr" : arr,

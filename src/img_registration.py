@@ -16,118 +16,75 @@ import SimpleITK as sitk
 from scipy import ndimage as nd
 from sklearn.feature_extraction import image
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
-train_dir = dir_path.rstrip("src") + "traindata"
-test_dir = dir_path.rstrip("src") + "testdata"
+DIR_PATH = os.path.dirname(os.path.realpath(__file__))
+TRAIN_DIR = DIR_PATH.rstrip("src") + "traindata"
+TEST_DIR = DIR_PATH.rstrip("src") + "testdata"
 
-def register_patient(df, data_dir, data_type = "Train"):
-    dir_path = "/Users/vester/Desktop/"
+TYPES = ["adc", "bval", "ktrans"]
+FIXED = "adc"
+
+
+def register_patient(df, data_dir, img_types, fixed_type):
     for pid in df.ProxID.unique():
-
-        temp = df.loc[df.ProxID == pid]
-        try:
-            # Get ADC, BVAL Dirs
-            names = temp.Name.values
-            adc_dir = temp[[name.endswith("ADC0") for name in names]].DCMSerUID.unique()[0]
-            bval_dir = temp[[name.endswith("BVAL0") for name in names]].DCMSerUID.unique()[0]
-            dicom_find = list(temp[[name.endswith("BVAL0") for name in names]].ijk.unique())
-            dicom_find = [[int(coord) for coord in f.split(" ")] for f in dicom_find]
-
-
-            adc_scale = temp[[name.endswith("ADC0") for name in names]].VoxelSpacing.unique()[0]
-            bval_scale = temp[[name.endswith("BVAL0") for name in names]].VoxelSpacing.unique()[0]
-            adc_wm = temp[[name.endswith("ADC0") for name in names]].WorldMatrix.unique()[0]
-            bval_wm = temp[[name.endswith("BVAL0") for name in names]].WorldMatrix.unique()[0]
-            adc_wm = np.array(adc_wm.split(","), np.float).reshape(4,4)
-            bval_wm = np.array(bval_wm.split(","), np.float).reshape(4,4)
-
-        except:
-            continue
-
-        dicom_path = data_dir + "/".join(["/raw/dicom", pid])
-        ktrans_path = data_dir + "/".join(["/raw/ktrans", pid, pid])
-
-        # Get Images
-        imga = load_dicom(dicom_path, adc_dir)
-        imgb = load_dicom(dicom_path, bval_dir)
-        imgk = load_ktrans(ktrans_path)
-
-        # Get Scale and set scale, since it is weird
-        imga['scale'] = np.array(adc_scale[::-1].split(','), dtype = np.float)
-        imgb['scale'] = np.array(bval_scale[::-1].split(','), dtype = np.float)
-        imga['img'].SetSpacing(imga['scale'][::-1])
-        imgb['img'].SetSpacing(imgb['scale'][::-1])
-
-        #reg_input = get_registration_dicts(imga['img'], imgb['img'], imgk['img'], fixed = 'adc')
-
-        #
-        reg_input = get_registration_dicts(sitk.GetImageFromArray(rescale_arr(imga['arr'],imga['scale'])),
-                                           sitk.GetImageFromArray(rescale_arr(imgb['arr'],imgb['scale'])),
-                                           sitk.GetImageFromArray(rescale_arr(imgk['arr'],imgk['scale'])),
-                                           fixed = 'adc')
-        # Registration
-        resampled = register_images(fixed_img = reg_input[0], moving_imgs = reg_input[1:])
+        imgs = load_niftis(data_dir, pid, img_types)
         pdb.set_trace()
-        sitk.WriteImage(original_image, output_file_name_3D)
-        # Saving Nifti For viewing
-        save_nifti(dir_path + "raw", imga['arr'], imgb['arr'], imgk['arr'])
-        dicts_2_nifti(dir_path + "resampled", resampled)
 
-        # Trying resizing
-        tra = sitk.ScaleTransform(3, 1./imga['scale'])
-        trb = sitk.ScaleTransform(3, 1./imga['scale'])
-        trc = sitk.ScaleTransform(3, 1./imga['scale'])
-        timg = resample(imgk['img'], transform)
-        tarr = sitk.GetArrayFromImage(timg)
-        affine = np.diag([1, 1, 1, 1])
-        tnib = nib.Nifti1Image(tarr, affine)
-        nib.save(tnib, dir_path+'test.nii')
+        fixed = sitk.GetImageFromArray(imgs.pop(fixed_type).get_data())
+        moving = [sitk.GetImageFromArray(nii.get_data()) for nii in imgs.values()]
 
-        tarr = rescale_arr(imgk['arr'], imgk['scale'])
-        affine = np.diag([1, 1, 1, 1])
-        tnib = nib.Nifti1Image(tarr, affine)
-        nib.save(tnib, dir_path+'atest.nii')
+        res = register_images(fixed, moving)
+    return
 
-        pdb.set_trace()
+
+def load_niftis(path, pid, types):
+    imgs = []
+    for t in types:
+        img_path = "/".join([path, "nifti", t, pid, pid])
+        img = nib.load(img_path + ".nii")
+        imgs.append(img)
+
+    return dict(zip(types, imgs))
+
+
+def dicom2nifti(main_dir, img_type, dicom_path, img_dir, pid):
+    """
+    #dicom2nifti
+    dicom2nifti(data_dir, 'adc', dicom_path, adc_dir, pid)
+    dicom2nifti(data_dir, 'bval', dicom_path, bval_dir, pid)
+    """
+    out_dir = "{0}/nifti/{1}/{2}".format(main_dir, img_type, pid)
+
+    subdir = os.listdir(dicom_path)[-1]
+    path = "/".join([dicom_path, subdir, img_dir])
+    os.system("rm -rf {0}".format(out_dir))
+    os.system("mkdir {0}".format(out_dir))
+    os.system("/Applications/MRIcron/dcm2nii -e N -p N -d N -g N -i Y -n Y -o {0} {1}".format(out_dir, path))
 
     return
 
 
-def get_mhd(path):
+def ktrans2nifti(path, img, img_type, pid, transpose = False):
     """
-    read mhd files
+
     """
-    with open(path) as mhd:
-        header = mhd.read()
-        header = [h.split(" = ") for h in header.split("\n")]
-        header = dict(header[:-1])
+    print(pid)
+    out_dir = "{0}/nifti/{1}/{2}".format(path, img_type, pid)
+    path = "/".join([out_dir, pid])
+    os.system("rm -rf {0}".format(out_dir))
+    os.system("mkdir {0}".format(out_dir))
 
-    if 'TransformMatrix' in header:
-        header['TransformMatrix'] = np.array(header['TransformMatrix'].split(" "), dtype=np.float)
-    if 'Offset' in header:
-        header['Offset'] = np.array(header['Offset'].split(" "), dtype=np.float)
-    if 'ElementSpacing' in header:
-        header['ElementSpacing'] = np.array(header['ElementSpacing'].split(" "), dtype=np.float)
-    if 'NDims' in header:
-        header['NDims'] = int(header['NDims'])
-    if 'DimSize' in header:
-        header['DimSize'] = np.array(header['DimSize'].split(" "), dtype=np.int)
-    if 'CenterOfRotation' in header:
-        header['CenterOfRotation'] = np.array(header['CenterOfRotation'].split(" "), dtype=np.int)
+    affine = np.zeros((4,4))
+    affine[:,-1] = np.append(img['origin'],1)
+    for j in range(3):
+        affine[j,:-1] = img['direction'][j*3:3*(j+1)]* img['scale'][-(j+1)]
 
-    return header
+    if transpose:
+        nii = nib.Nifti1Image(img['arr'].T, affine.T)
+    else:
+        nii = nib.Nifti1Image(img['arr'], affine)
 
-
-def save_nifti(dir_path, adc, bval, ktrans):
-    affine = np.diag([1, 1, 1, 1])
-    adc_img = nib.Nifti1Image(adc, affine)
-    bval_img = nib.Nifti1Image(bval, affine)
-    ktrans_img = nib.Nifti1Image(ktrans, affine)
-
-    nib.save(adc_img, dir_path+'adc.nii')
-    nib.save(bval_img, dir_path+'bval.nii')
-    nib.save(ktrans_img, dir_path+'ktrans.nii')
-    return
+    nib.save(nii, path+'.nii')
+    return nii
 
 
 def load_ktrans(path):
@@ -225,11 +182,11 @@ def register_images(fixed_img, moving_imgs):
     See https://goo.gl/kF2x9Z
     """
 
-    fixed = sitk.Cast(fixed_img['img'], sitk.sitkFloat32)
+    fixed = sitk.Cast(fixed_img, sitk.sitkFloat32)
 
     resampled = []
     for moving_img in moving_imgs:
-        moving = sitk.Cast(moving_img['img'],sitk.sitkFloat32)
+        moving = sitk.Cast(moving_img,sitk.sitkFloat32)
         # Align Images
         moving, init_transform = align_images(fixed, moving)
         # Registration
@@ -237,7 +194,8 @@ def register_images(fixed_img, moving_imgs):
 
         resampled.append(moving)
 
-    results = get_registration_dicts(fixed, *resampled, fixed = fixed_img['name'])
+    pdb.set_trace()
+    results = get_registration_dicts(fixed, *resampled, fixed = fixed_img)
     return results
 
 
@@ -274,7 +232,7 @@ def register_image(fixed, moving, initial_transform):
 
     # Optimizer settings.
     registration_method.SetOptimizerAsGradientDescent(learningRate=0.01, numberOfIterations=100, convergenceMinimumValue=1e-6, convergenceWindowSize=10)
-    #registration_method.SetOptimizerScalesFromPhysicalShift()
+    registration_method.SetOptimizerScalesFromPhysicalShift()
 
     # Setup for the multi-resolution framework.
     #registration_method.SetShrinkFactorsPerLevel(shrinkFactors = [4,2,1])
@@ -343,9 +301,33 @@ def transform_img(img, arr, scale, direction, origin):
     return img
 
 
-if __name__ == '__main__':
-    df_train = pd.read_csv(train_dir + "/ProstateX2-DataInfo-Train/ProstateX-2-Images-Train.csv")
-    df_test = pd.read_csv(test_dir + "/ProstateX2-DataInfo-Test/ProstateX-2-Images-Test.csv")
+def get_mhd(path):
+    """
+    read mhd files
+    """
+    with open(path) as mhd:
+        header = mhd.read()
+        header = [h.split(" = ") for h in header.split("\n")]
+        header = dict(header[:-1])
 
-    register_patient(df_train, train_dir, data_type = "Train")
-    register_patient(df_test, test_dir, data_type = "Test")
+    if 'TransformMatrix' in header:
+        header['TransformMatrix'] = np.array(header['TransformMatrix'].split(" "), dtype=np.float)
+    if 'Offset' in header:
+        header['Offset'] = np.array(header['Offset'].split(" "), dtype=np.float)
+    if 'ElementSpacing' in header:
+        header['ElementSpacing'] = np.array(header['ElementSpacing'].split(" "), dtype=np.float)
+    if 'NDims' in header:
+        header['NDims'] = int(header['NDims'])
+    if 'DimSize' in header:
+        header['DimSize'] = np.array(header['DimSize'].split(" "), dtype=np.int)
+    if 'CenterOfRotation' in header:
+        header['CenterOfRotation'] = np.array(header['CenterOfRotation'].split(" "), dtype=np.int)
+
+    return header
+
+if __name__ == '__main__':
+    df_train = pd.read_csv(TRAIN_DIR + "/ProstateX2-DataInfo-Train/ProstateX-2-Images-Train.csv")
+    df_test = pd.read_csv(TEST_DIR + "/ProstateX2-DataInfo-Test/ProstateX-2-Images-Test.csv")
+
+    register_patient(df_train, TRAIN_DIR, TYPES, FIXED)
+    register_patient(df_test, TEST_DIR, TYPES, FIXED)

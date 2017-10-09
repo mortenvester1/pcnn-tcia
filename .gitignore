@@ -1,6 +1,7 @@
 # Files
 *.DS_Store
 src/visualizer.py
+src/sitk_display.py
 
 # Folders
 testdata
