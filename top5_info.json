@@ -1,167 +1,202 @@
 {
-  "top_5_test_loss": [
-    0.5162855820286841,
-    0.5206739221442314,
-    1.6389648294448853,
-    1.645058780312538,
-    1.6477403956651688
+  "top_5_valid_loss": [
+    0.40267317494214405,
+    0.408292604471956,
+    0.4096478727176076,
+    0.41150089875573204,
+    0.43177398237644204
+  ],
+  "top_5_train_loss": [
+    0.3488684583578935,
+    0.40334762942400715,
+    0.4060493566361921,
+    0.4038102751597762,
+    0.41718644114231973
   ],
   "info": [
     {
       "lossfunc_info": {},
-      "net_parameters": "pcNN (\n  (conv1): Conv2d(3, 3, kernel_size=(3, 3), stride=(1, 1))\n  (BN): BatchNorm2d(3, eps=1e-05, momentum=0.1, affine=True)\n  (dropout): Dropout (p = 0.25)\n  (dropout2d): Dropout2d (p=0.25)\n  (fc1): Linear (48 -> 24)\n  (fc2): Linear (24 -> 2)\n)",
-      "test_loss": 0.5162855820286841,
+      "test_pct": 0.8290679578073664,
+      "net_name": "ec4360cf1f63",
+      "train_time": 17105.578993797302,
+      "lossfunc_name": "ADAM",
+      "train_pct": 0.8572866672089807,
+      "net_parameters": "pcNN3D (\n  (conv1): Conv3d(3, 3, kernel_size=(3, 3, 1), stride=(1, 1, 1))\n  (conv2): Conv3d(3, 3, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n  (BN): BatchNorm3d(3, eps=1e-10, momentum=0.1, affine=True)\n  (dropout): Dropout (p = 0.0)\n  (dropout2d): Dropout2d (p=0.0)\n  (dropout3d): Dropout3d (p=0.0)\n  (fc1): Linear (192 -> 90)\n  (fc2): Linear (90 -> 2)\n)",
+      "train_loss": 0.3488684583578935,
+      "test_loss": 0.40267317494214405,
       "rank": 1,
-      "train_pct": 0.8363214285714285,
-      "lossfunc_name": "SGD",
+      "optimizer_name": "CrossEntropy",
       "optimizer_info": [
         {
-          "weight_decay": 0,
-          "momentum": 0.9,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "weight_decay": 0.005,
+          "eps": 1e-08,
           "lr": 0.001,
           "params": [
-            4533427984,
-            4513037656,
-            4497346144,
-            4541245576,
-            4541246984,
-            4541245928,
-            4541245664,
-            4541245752
-          ],
-          "dampening": 0,
-          "nesterov": false
+            4409227136,
+            4360425720,
+            4411194096,
+            4411193040,
+            4411192776,
+            4411192864,
+            4411191896,
+            4411191984,
+            4411191632,
+            4411191808
+          ]
         }
-      ],
-      "test_pct": 0.7868761904761905,
-      "net_name": "b5c8e14e33b1",
-      "optimizer_name": "CrossEntropy",
-      "train_loss": 0.4696426544693254
+      ]
     },
     {
-      "train_pct": 0,
-      "test_loss": 0.5206739221442314,
-      "rank": 1,
-      "net_parameters": "pcNN (\n  (conv1): Conv2d(3, 3, kernel_size=(3, 3), stride=(1, 1))\n  (BN): BatchNorm2d(3, eps=1e-05, momentum=0.1, affine=True)\n  (max_pool): MaxPool2d (size=(2, 2), stride=(1, 1), dilation=(1, 1))\n  (fc1): Linear (48 -> 24)\n  (fc2): Linear (24 -> 2)\n)",
       "lossfunc_info": {},
+      "test_pct": 0.9019333333333334,
+      "net_name": "a31d9d5a6ea7",
+      "train_time": 16767.909329414368,
       "lossfunc_name": "SGD",
+      "train_pct": 0.9071934523809524,
+      "net_parameters": "pcNN (\n  (conv1): Conv2d(3, 3, kernel_size=(3, 3), stride=(1, 1))\n  (BN): BatchNorm2d(3, eps=1e-05, momentum=0.1, affine=True)\n  (dropout): Dropout (p = 0.2)\n  (dropout2d): Dropout2d (p=0.2)\n  (fc1): Linear (48 -> 24)\n  (fc2): Linear (24 -> 2)\n)",
+      "train_loss": 0.40334762942400715,
+      "test_loss": 0.408292604471956,
+      "rank": 1,
+      "optimizer_name": "CrossEntropy",
       "optimizer_info": [
         {
-          "weight_decay": 0,
-          "momentum": 0.9,
           "nesterov": false,
-          "params": [
-            4435869456,
-            4415483224,
-            4399787616,
-            4443691144,
-            4443692552,
-            4443691496,
-            4443691232,
-            4443691320
-          ],
+          "lr": 0.001,
+          "momentum": 0.9,
           "dampening": 0,
-          "lr": 0.001
+          "weight_decay": 0,
+          "params": [
+            4581220200,
+            4560825776,
+            4544564832,
+            4589033696,
+            4589035104,
+            4589034048,
+            4589033784,
+            4589033872
+          ]
         }
-      ],
-      "test_pct": 0,
-      "net_name": "458306cf68c1",
-      "optimizer_name": "CrossEntropy",
-      "train_loss": 0.4825144198590091
+      ]
     },
     {
-      "net_parameters": "pcNN (\n  (conv1): Conv2d(3, 3, kernel_size=(3, 3), stride=(1, 1))\n  (BN): BatchNorm2d(3, eps=1e-05, momentum=0.1, affine=True)\n  (max_pool): MaxPool2d (size=(2, 2), stride=(1, 1), dilation=(1, 1))\n  (fc1): Linear (1200 -> 600)\n  (fc2): Linear (600 -> 25)\n)",
-      "test_loss": 1.6389648294448853,
-      "rank": 1,
       "lossfunc_info": {},
+      "test_pct": 0.9005,
+      "net_name": "1a2faedbdb27",
+      "train_time": 8086.211824655533,
       "lossfunc_name": "SGD",
-      "optimizer_info": [
-        {
-          "weight_decay": 0,
-          "momentum": 0.9,
-          "nesterov": false,
-          "params": [
-            4482162624,
-            4461764104,
-            4446281800,
-            4489976120,
-            4489977528,
-            4489976472,
-            4489976208,
-            4489976296
-          ],
-          "dampening": 0,
-          "lr": 0.001
-        }
-      ],
-      "net_name": "d4438443a978",
-      "optimizer_name": "BinaryCrossEntropy",
-      "train_loss": 1.6645637571811676
-    },
-    {
-      "net_parameters": "pcNN (\n  (conv1): Conv2d(3, 3, kernel_size=(3, 3), stride=(1, 1))\n  (BN): BatchNorm2d(3, eps=1e-05, momentum=0.1, affine=True)\n  (max_pool): MaxPool2d (size=(2, 2), stride=(1, 1), dilation=(1, 1))\n  (fc1): Linear (1200 -> 600)\n  (fc2): Linear (600 -> 25)\n)",
-      "test_loss": 1.645058780312538,
+      "train_pct": 0.9044196428571428,
+      "net_parameters": "pcNN (\n  (conv1): Conv2d(3, 3, kernel_size=(3, 3), stride=(1, 1))\n  (BN): BatchNorm2d(3, eps=1e-05, momentum=0.1, affine=True)\n  (dropout): Dropout (p = 0.2)\n  (dropout2d): Dropout2d (p=0.2)\n  (fc1): Linear (48 -> 24)\n  (fc2): Linear (24 -> 2)\n)",
+      "train_loss": 0.4060493566361921,
+      "test_loss": 0.4096478727176076,
       "rank": 2,
-      "lossfunc_info": {},
-      "lossfunc_name": "SGD",
+      "optimizer_name": "CrossEntropy",
       "optimizer_info": [
         {
-          "weight_decay": 0,
-          "momentum": 0.9,
           "nesterov": false,
-          "params": [
-            4348317632,
-            4327919112,
-            4312445000,
-            4356131128,
-            4356132536,
-            4356131480,
-            4356131216,
-            4356131304
-          ],
+          "lr": 0.001,
+          "momentum": 0.9,
           "dampening": 0,
-          "lr": 0.001
+          "weight_decay": 0,
+          "params": [
+            4587990888,
+            4567596464,
+            4551372384,
+            4595808480,
+            4595809888,
+            4595808832,
+            4595808568,
+            4595808656
+          ]
         }
-      ],
-      "net_name": "bf1b30c859b7",
-      "optimizer_name": "BinaryCrossEntropy",
-      "train_loss": 1.583202497959137
+      ]
     },
     {
-      "net_parameters": "pcNN (\n  (conv1): Conv2d(3, 3, kernel_size=(3, 3), stride=(1, 1))\n  (BN): BatchNorm2d(3, eps=1e-05, momentum=0.1, affine=True)\n  (max_pool): MaxPool2d (size=(2, 2), stride=(1, 1), dilation=(1, 1))\n  (fc1): Linear (1200 -> 600)\n  (fc2): Linear (600 -> 25)\n)",
-      "test_loss": 1.6477403956651688,
-      "rank": 3,
       "lossfunc_info": {},
+      "test_pct": 0.8983857142857142,
+      "net_name": "ad21a5bd6ed0",
+      "train_time": 28508.215147018433,
       "lossfunc_name": "SGD",
+      "train_pct": 0.9069702380952381,
+      "net_parameters": "pcNN (\n  (conv1): Conv2d(3, 3, kernel_size=(3, 3), stride=(1, 1))\n  (BN): BatchNorm2d(3, eps=1e-05, momentum=0.1, affine=True)\n  (dropout): Dropout (p = 0.2)\n  (dropout2d): Dropout2d (p=0.2)\n  (fc1): Linear (48 -> 24)\n  (fc2): Linear (24 -> 2)\n)",
+      "train_loss": 0.4038102751597762,
+      "test_loss": 0.41150089875573204,
+      "rank": 3,
+      "optimizer_name": "CrossEntropy",
       "optimizer_info": [
         {
-          "weight_decay": 0,
-          "momentum": 0.9,
           "nesterov": false,
-          "params": [
-            4441616232,
-            4421221808,
-            4405538400,
-            4449429728,
-            4449431136,
-            4449430080,
-            4449429816,
-            4449429904
-          ],
+          "lr": 0.001,
+          "momentum": 0.9,
           "dampening": 0,
-          "lr": 0.001
+          "weight_decay": 0,
+          "params": [
+            4389760872,
+            4369370544,
+            4353097312,
+            4397578464,
+            4397579872,
+            4397578816,
+            4397578552,
+            4397578640
+          ]
+        }
+      ]
+    },
+    {
+      "lossfunc_info": {},
+      "test_pct": 0.8577871923453801,
+      "net_name": "22a278dd800c",
+      "train_time": 143056.15635585785,
+      "lossfunc_name": "ADAM",
+      "train_pct": 0.8967039990703215,
+      "net_parameters": "pcNN3D (\n  (layer1): Sequential (\n    (0): Conv3d(3, 4, kernel_size=(1, 3, 3), stride=(1, 1, 1))\n    (1): InstanceNorm3d(4, eps=1e-05, momentum=0.1, affine=False)\n    (2): ReLU ()\n    (3): Dropout (p = 0.2)\n  )\n  (layer2): Sequential (\n    (0): Conv3d(4, 4, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n    (1): InstanceNorm3d(4, eps=1e-05, momentum=0.1, affine=False)\n    (2): ReLU ()\n    (3): Dropout (p = 0.2)\n  )\n  (layer3): Sequential (\n    (0): Conv3d(4, 8, kernel_size=(1, 3, 3), stride=(1, 1, 1))\n    (1): InstanceNorm3d(8, eps=1e-05, momentum=0.1, affine=False)\n    (2): ReLU ()\n    (3): Dropout (p = 0.2)\n  )\n  (layer4): Sequential (\n    (0): Conv3d(8, 8, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n    (1): InstanceNorm3d(8, eps=1e-05, momentum=0.1, affine=False)\n    (2): ReLU ()\n    (3): Dropout (p = 0.2)\n  )\n  (layer5): Sequential (\n    (0): MaxPool3d (size=(1, 2, 2), stride=(1, 2, 2), padding=0, dilation=1, ceil_mode=False)\n    (1): InstanceNorm3d(8, eps=1e-05, momentum=0.1, affine=False)\n    (2): ReLU ()\n    (3): Dropout (p = 0.2)\n  )\n  (layer6): Sequential (\n    (0): Conv3d(8, 16, kernel_size=(1, 3, 3), stride=(1, 1, 1))\n    (1): InstanceNorm3d(16, eps=1e-05, momentum=0.1, affine=False)\n    (2): ReLU ()\n    (3): Dropout (p = 0.2)\n  )\n  (layer7): Sequential (\n    (0): Conv3d(16, 16, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n    (1): InstanceNorm3d(16, eps=1e-05, momentum=0.1, affine=False)\n    (2): ReLU ()\n    (3): Dropout (p = 0.2)\n  )\n  (layer8): Sequential (\n    (0): Conv3d(16, 32, kernel_size=(1, 3, 3), stride=(1, 1, 1))\n    (1): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False)\n    (2): ReLU ()\n    (3): Dropout (p = 0.2)\n  )\n  (layer9): Sequential (\n    (0): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n    (1): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False)\n    (2): ReLU ()\n    (3): Dropout (p = 0.2)\n  )\n  (layer10): Sequential (\n    (0): Conv3d(32, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n    (1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False)\n    (2): ReLU ()\n    (3): Dropout (p = 0.2)\n  )\n  (layer11Dense): Sequential (\n    (0): Linear (512 -> 192)\n    (1): ReLU ()\n  )\n  (layer12Dense): Sequential (\n    (0): Linear (192 -> 90)\n    (1): ReLU ()\n  )\n  (layer13Dense): Sequential (\n    (0): Linear (90 -> 2)\n    (1): Softmax ()\n  )\n)",
+      "train_loss": 0.41718644114231973,
+      "valid_pct": 0.8577871923453801,
+      "test_loss": 0.4554247020027055,
+      "rank": 5,
+      "optimizer_name": "CrossEntropy",
+      "optimizer_info": [
+        {
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "weight_decay": 0.005,
+          "eps": 1e-08,
+          "lr": 0.00025,
+          "params": [
+            4399433248,
+            4399433512,
+            4399434568,
+            4399434744,
+            4399434832,
+            4399434920,
+            4399435008,
+            4399435096,
+            4399435184,
+            4399435272,
+            4399435360,
+            4399435448,
+            4399435536,
+            4399435624,
+            4399435712,
+            4401721416,
+            4401721504,
+            4401721592,
+            4401721680,
+            4401721768,
+            4401721856,
+            4401721944,
+            4401722032,
+            4401722120
+          ]
         }
       ],
-      "net_name": "1b847730e64d",
-      "optimizer_name": "BinaryCrossEntropy",
-      "train_loss": 1.6202864611148835
+      "valid_loss": 0.43177398237644204
     }
-  ],
-  "top_5_train_loss": [
-    0.4696426544693254,
-    0.4825144198590091,
-    1.6645637571811676,
-    1.583202497959137,
-    1.6202864611148835
   ]
 }

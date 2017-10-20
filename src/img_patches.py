@@ -322,8 +322,8 @@ if __name__ == '__main__':
     df_train = pd.read_csv(train_dir + "/ProstateX2-DataInfo-Train/ProstateX-2-Images-Train.csv")
     df_test = pd.read_csv(test_dir + "/ProstateX2-DataInfo-Test/ProstateX-2-Images-Test.csv")
 
-    get_patches(df_train, train_dir, img_type = "ADC", data_type = "Train")
-    get_patches(df_test, test_dir, img_type = "ADC", data_type = "Test")
+    #get_patches(df_train, train_dir, img_type = "ADC", data_type = "Train")
+    #get_patches(df_test, test_dir, img_type = "ADC", data_type = "Test")
 
-    #get_patches(df_train, train_dir, img_type = "BVAL", data_type = "Train")
-    #get_patches(df_test, test_dir, img_type = "BVAL", data_type = "Test")
+    get_patches(df_train, train_dir, img_type = "BVAL", data_type = "Train")
+    get_patches(df_test, test_dir, img_type = "BVAL", data_type = "Test")

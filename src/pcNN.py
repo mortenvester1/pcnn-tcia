@@ -17,13 +17,13 @@ import torchvision.transforms as transforms
 import torchvision.datasets as dset
 from torch.autograd import Variable
 
-IMG_TYPE = "ADC"
+IMG_TYPE = "BVAL"
 PATH = None
 HLEN = 106
 
 TRAIN_LOADER = TEST_LOADER = CLASSES = None
 
-NO_EPOCHS = 20
+NO_EPOCHS = 40
 BATCH_SIZE = 100
 LR = 0.001
 MOM = 0.9
@@ -53,6 +53,8 @@ class pcNN(nn.Module):
                                groups = 1,
                                bias = True)
 
+
+
         self.BN = nn.BatchNorm2d(num_features = 3,
                                  eps=1e-05,
                                  momentum=0.1,
@@ -78,12 +80,12 @@ class pcNN(nn.Module):
         # Layer 1, 3x3 Conv, Batch Norm, Relu
         x = self.conv1(x)
         x = F.relu(self.BN(x))
-        x = self.dropout2d(self.BN(x))
+        #x = self.dropout2d(x)
 
         # Layer 2, 3x3 Conv, Batch Norm, Relu
         x = self.conv1(x)
         x = F.relu(self.BN(x))
-        #x = self.dropout2d(self.BN(x))
+        #x = self.dropout2d(x)
 
         # Layer 3, 2x2 Max_pool, 3x3 Conv, Batch Norm, Relu
         x = F.max_pool2d(x, kernel_size = 2)
@@ -93,12 +95,12 @@ class pcNN(nn.Module):
         # Layer 4, 3x3 Conv, Batch Norm, Relu
         x = self.conv1(x)
         x = F.relu(self.BN(x))
-        #x = self.dropout2d(self.BN(x))
+        #x = self.dropout2d(x)
 
         # Layer 5, 3x3 Conv, Batch Norm, Relu
         x = self.conv1(x)
         x = F.relu(self.BN(x))
-        x = self.dropout2d(self.BN(x))
+        #x = self.dropout2d(x)
 
         # Layer 6, 2x2 Max_pool
         x = F.max_pool2d(x, kernel_size = 2)
@@ -214,6 +216,10 @@ def training(net, optimizer, lossfunc, number_of_epochs = 1):
         print( '{0:<10s}\t{1:>10s}\t{2:>10s}\t{3:>10s}\t{4:>10s}\t{5:>10s}\t{6:>10s}'
             .format( 'Epoch', 'Batch#', 'Loss Train' , 'Loss Test', 'pct Train', 'pct Test', 'Time') )
 
+        if train_pct > 0.90 and test_pct > 0.90:
+            print_border()
+            print_header("!!!Early termination!!!")
+            break
 
     print_border()
     print_header("Total Training Time :{0:1.9f}".format(total_time))
