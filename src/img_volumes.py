@@ -13,11 +13,6 @@ from skimage.util import view_as_windows
 from scipy import ndimage as nd
 from sklearn.feature_extraction import image
 
-#aFILE = h5py.File("/Users/vester/Desktop/af.hdf5")
-#bFILE = h5py.File("/Users/vester/Desktop/bf.hdf5")
-#kFILE = h5py.File("/Users/vester/Desktop/kf.hdf5")
-
-
 SRC_DIR = os.path.dirname(os.path.realpath(__file__))
 TRAIN_DIR = SRC_DIR.rstrip("src") + "traindata"
 TEST_DIR = SRC_DIR.rstrip("src") + "testdata"
@@ -40,22 +35,15 @@ def get_volumes(df, data_dir, img_types = [], data_type = "Train"):
     print("Cleaning Output Directory")
     os.system("rm -rf %s" % (data_dir + "/volumes/" ) )
     os.system("mkdir %s" % (data_dir+"/volumes/") )
-    os.system("mkdir %s" % (data_dir+"/volumes/POS") )
-    os.system("mkdir %s" % (data_dir+"/volumes/NEG") )
+    #os.system("mkdir %s" % (data_dir+"/volumes/POS") )
+    #os.system("mkdir %s" % (data_dir+"/volumes/NEG") )
 
     print_border()
     header = ",".join(img_types) + " - " + data_type
     print_header(header)
     print_border()
 
-
-    aFILEP = h5py.File(data_dir+"/volumes/POS/a"+data_type+".h5",'w')
-    bFILEP = h5py.File(data_dir+"/volumes/POS/b"+data_type+".h5",'w')
-    kFILEP = h5py.File(data_dir+"/volumes/POS/k"+data_type+".h5",'w')
-    aFILEN = h5py.File(data_dir+"/volumes/NEG/a"+data_type+".h5",'w')
-    bFILEN = h5py.File(data_dir+"/volumes/NEG/b"+data_type+".h5",'w')
-    kFILEN = h5py.File(data_dir+"/volumes/NEG/k"+data_type+".h5",'w')
-
+    h5storage = h5py.File(data_dir+"/volumes/"+data_type.lower()+".h5",'w')
 
     print("{0:<15s}\t{1:>5s}\t{2:>10s}\t{3:>10s}\t{4:>6s}\t{5:>6s}\t{6:>6s}\t{7:>6s}"\
         .format("PID", "#Find", "#Volume", "#Positive", "#Negative", "Load time", "Extract Time", "Save Time"))
@@ -99,7 +87,7 @@ def get_volumes(df, data_dir, img_types = [], data_type = "Train"):
         n = len(neg[0])
         print("{0:<15s}\t{1:>5d}\t{2:>10s}\t{3:>10s}\t   {4:>6s}\t   {5:>6s}\t      {6:>6s}"\
                 .format("Saving", fc, str(p+n), str(p), str(n), str(ltime)[:6], str(etime)[:6]), end = "\r", flush = True)
-        save_vols(data_dir + '/volumes/', pid, pos, neg, aFILEP, bFILEP, kFILEP, aFILEN, bFILEN, kFILEN)
+        save_vols(data_dir + '/volumes/', pid, pos, neg, h5storage)
         stime = time.time() - s_start
 
         ##### Print stats
@@ -113,13 +101,7 @@ def get_volumes(df, data_dir, img_types = [], data_type = "Train"):
     print_header(header)
     print_border()
 
-
-    aFILEP.close()
-    bFILEP.close()
-    kFILEP.close()
-    aFILEN.close()
-    bFILEN.close()
-    kFILEN.close()
+    h5storage.close()
 
     return
 
@@ -227,29 +209,17 @@ def load_nifti(path, pid, img_types):
     return imgs
 
 
-def save_vols(path, pid, pos, neg, aFileP, bFileP, kFileP, aFileN, bFileN, kFileN):
-    ext = ".npz"
+def save_vols(path, pid, pos, neg, h5storage):
+    #ext = ".npz"
     #ext = ".nii.gz"
-    pos_path = [path+"/POS/" + it[0]+pid[-4:] for it in IMG_TYPES]
-    neg_path = [path+"/NEG/" + it[0]+pid[-4:] for it in IMG_TYPES]
-    uuids = gen_ids(len(pos[0]))
+    #pos_path = [path+"/POS/" + it[0]+pid[-4:] for it in IMG_TYPES]
+    #neg_path = [path+"/NEG/" + it[0]+pid[-4:] for it in IMG_TYPES]
+    #uuids = gen_ids(len(pos[0]))
 
-    #agrpp = aFileP.create_group(pid[-4:])
-    #bgrpp = bFileP.create_group(pid[-4:])
-    #kgrpp = kFileP.create_group(pid[-4:])
-    #agrpn = aFileN.create_group(pid[-4:])
-    #bgrpn = bFileN.create_group(pid[-4:])
-    #kgrpn = kFileN.create_group(pid[-4:])
     #affine = np.diag([1,1,1,1])
     for j, p in enumerate(pos):
         for k, vol in enumerate(p):
-            if j == 0:
-                aFileP.create_dataset(pid[-4:] + "-{0:05d}".format(k), data = vol.astype(np.float16))
-                #dset = aFileP.create_dataset(pid[-4:], data = vol.astype(np.float16))
-            elif j == 1:
-                bFileP.create_dataset(pid[-4:] + "-{0:05d}".format(k), data = vol.astype(np.float16))
-            elif j == 2:
-                kFileP.create_dataset(pid[-4:] + "-{0:05d}".format(k), data = vol.astype(np.float16))
+            h5storage.create_dataset("POS/" + IMG_TYPES[j] + "/" + pid[-4:] + "-{0:05d}".format(k), data = vol.astype(np.float64))
             #vol.astype(np.float16).tofile(pos_path[j] + "-{0:05d}".format(k))
             #sp.sparse.save_npz(pos_path[j] + "-{0:05d}".format(k) + ext,sp.sparse.spmatrix(vol))
             #np.save(pos_path[j] + "-{0:05d}".format(k) + ext, vol)
@@ -259,12 +229,7 @@ def save_vols(path, pid, pos, neg, aFileP, bFileP, kFileP, aFileN, bFileN, kFile
 
     for j, n in enumerate(neg):
         for k, vol in enumerate(n):
-            if j == 0:
-                aFileN.create_dataset(pid[-4:] + "-{0:05d}".format(k), data = vol.astype(np.float16))
-            elif j == 1:
-                bFileN.create_dataset(pid[-4:] + "-{0:05d}".format(k), data = vol.astype(np.float16))
-            elif j == 2:
-                kFileN.create_dataset(pid[-4:] + "-{0:05d}".format(k), data = vol.astype(np.float16))
+            h5storage.create_dataset("NEG/" + IMG_TYPES[j] + "/" + pid[-4:] + "-{0:05d}".format(k), data = vol.astype(np.float64))
             #vol.astype(np.float16).tofile(neg_path[j] + uuids[k])
             #sp.sparse.save_npz(neg_path[j] + uuids[k] + ext,sp.sparse.spmatrix(vol))
             #np.save(neg_path[j] + uuids[k] + ext, vol)
