@@ -35,8 +35,6 @@ def get_volumes(df, data_dir, img_types = [], data_type = "Train"):
     print("Cleaning Output Directory")
     os.system("rm -rf %s" % (data_dir + "/volumes/" ) )
     os.system("mkdir %s" % (data_dir+"/volumes/") )
-    #os.system("mkdir %s" % (data_dir+"/volumes/POS") )
-    #os.system("mkdir %s" % (data_dir+"/volumes/NEG") )
 
     print_border()
     header = ",".join(img_types) + " - " + data_type
@@ -44,11 +42,18 @@ def get_volumes(df, data_dir, img_types = [], data_type = "Train"):
     print_border()
 
     h5storage = h5py.File(data_dir+"/volumes/"+data_type.lower()+".h5",'w')
+    MISSING = get_missing(data_dir)
+    pdb.set_trace()
 
     print("{0:<15s}\t{1:>5s}\t{2:>10s}\t{3:>10s}\t{4:>6s}\t{5:>6s}\t{6:>6s}\t{7:>6s}"\
         .format("PID", "#Find", "#Volume", "#Positive", "#Negative", "Load time", "Extract Time", "Save Time"))
     overall = time.time()
     for pid in df.ProxID.unique():
+        # Skip due to error in registration
+        if pid in MISSING:
+            print("{0:<15s}\t{1:>5s}".format(pid,"SKIP"))
+            continue
+
         load_start = time.time()
         print("{0:<15s}"
             .format("Loading"), end = "\r", flush = True)
@@ -256,6 +261,20 @@ def print_border():
     print("-"*HLEN)
     return
 
+
+def get_missing(data_dir):
+    try:
+        with open(data_dir + "/nifti/notes.txt", "r") as notes:
+            errors = notes.read()
+
+        errors = errors.lstrip("['").rstrip("']")
+        errors = erros.split("\n")
+        MISSING = [err.split("/")[-1][:-4] for err in errors]
+        MISSING = list(set(MISSING))
+    except:
+        MISSING = []
+
+    return MISSING
 
 if __name__ == '__main__':
     df_train = pd.read_csv(TRAIN_DIR + "/ProstateX2-DataInfo-Train/ProstateX-2-Images-Train.csv")

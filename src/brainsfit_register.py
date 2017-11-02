@@ -71,7 +71,8 @@ def register_patients(df, data_dir, fixed_type, mov_types):
     if errors:
         print_header("Found errors in {0:d} files".format(len(errors)), OUT_WIDTH)
         with open(data_dir + "notes.txt", 'w') as notes:
-            notes.write("\n".join(errors))
+            out = "\n ".join([str(err) for err in errors])
+            notes.write(str(out))
 
     print_border(OUT_WIDTH)
 
@@ -133,8 +134,8 @@ def get_paths(pid, data_dir, fixed_type, mov_types):
     moving_paths = [in_template.format(mov, pid) for mov in mov_types]
 
     out_template = data_dir + "registered/{0:s}{1:s}.nii"
-    out_paths = [out_template.format(pid[-4:], fixed_type)] +\
-                [out_template.format(pid[-4:], mov) for mov in mov_types]
+    out_paths = [out_template.format(pid, fixed_type)] +\
+                [out_template.format(pid, mov) for mov in mov_types]
 
     return fixed_path, moving_paths, out_paths
 
